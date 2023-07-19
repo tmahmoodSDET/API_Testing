@@ -1,0 +1,70 @@
+import requests
+import json
+
+# Define the base URL and common headers or parameters
+base_url = "https://api.example.com"
+headers = {"Content-Type": "application/json", "Authorization": "Bearer <token>"}
+params = {"param1": "value1", "param2": "value2"}
+
+# Test case: Send an HTTP GET request to a specific endpoint and validate the response status code
+def test_get_request():
+    endpoint = "/users"
+    url = base_url + endpoint
+    response = requests.get(url, headers=headers, params=params)
+
+    # Assert the response status code is 200
+    assert response.status_code == 200, "Expected status code 200"
+
+    # Print the request details
+    print("GET Request:")
+    print("URL:", url)
+    print("Headers:", headers)
+    print("Params:", params)
+    print("Response:", response.json())
+    print()
+
+# Test case: Send an HTTP POST request with JSON payload and validate the response body
+def test_post_request():
+    endpoint = "/users"
+    url = base_url + endpoint
+    payload = {"name": "John Doe", "email": "johndoe@example.com"}
+    response = requests.post(url, headers=headers, json=payload)
+
+    # Assert the response status code is 201
+    assert response.status_code == 201, "Expected status code 201"
+
+    # Assert that the response contains an ID
+    assert response.json()["id"] is not None, "Expected an ID in the response"
+
+    # Print the request details
+    print("POST Request:")
+    print("URL:", url)
+    print("Headers:", headers)
+    print("Payload:", payload)
+    print("Response:", response.json())
+    print()
+
+# Test case: Send an HTTP DELETE request to delete a resource and validate the response
+def test_delete_request():
+    resource_id = 123
+    endpoint = f"/users/{resource_id}"
+    url = base_url + endpoint
+    response = requests.delete(url, headers=headers)
+
+    # Assert the response status code is 204
+    assert response.status_code == 204, "Expected status code 204"
+
+    # Assert the response content is empty
+    assert response.content == b"", "Expected an empty response"
+
+    # Print the request details
+    print("DELETE Request:")
+    print("URL:", url)
+    print("Headers:", headers)
+    print("Response:", response.content)
+    print()
+
+# Run the test cases
+test_get_request()
+test_post_request()
+test_delete_request()
